@@ -24,7 +24,10 @@ def run_python_file(
             )
 
         if not os.path.isfile(absolute_file_path):
-            return f'Error: "{file_path}" does not exist or is not a regular file'
+            return (
+                f'Error: "{file_path}" '
+                "does not exist or is not a regular file"
+            )
 
         if not file_path.endswith(".py"):
             return f'Error: "{file_path}" is not a Python file'
@@ -60,3 +63,35 @@ def run_python_file(
 
     except Exception as e:
         return f"Error: executing Python file: {e}"
+
+
+schema_run_python_file = {
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": (
+            "Executes a Python file within the working directory, "
+            "with optional arguments"
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": (
+                        "Path of the Python file to execute, "
+                        "relative to the working directory"
+                    ),
+                },
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                    },
+                    "description": "Optional arguments to pass to the Python file",
+                },
+            },
+            "required": ["file_path"],
+        },
+    },
+}
